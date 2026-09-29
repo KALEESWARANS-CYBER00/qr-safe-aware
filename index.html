@@ -1,0 +1,1096 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>YOU ARE STUPID. (Officially Certified)</title>
+  <meta name="description" content="An automated internet verdict. Zero typing required. Pure random comedy.">
+  <style>
+    /* ==========================================================================
+       CSS RESET & VARIABLES
+       ========================================================================== */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg-warm: #FAF7F2;
+      --card-bg: #FFFFFF;
+      --text-main: #1C1917;
+      --text-muted: #78716C;
+      --text-light: #A8A29E;
+      --coral: #FF5A5F;
+      --coral-hover: #E4484D;
+      --coral-active: #C9393E;
+      --lemon: #FEF08A;
+      --lemon-dark: #854D0E;
+      --peach: #FFEDD5;
+      --lavender: #E9D5FF;
+      --mint: #BBF7D0;
+      --sky: #BAE6FD;
+      --border-subtle: #E7E5E4;
+      --shadow-sm: 0 2px 8px rgba(28, 25, 23, 0.05);
+      --shadow-md: 0 12px 32px -4px rgba(28, 25, 23, 0.08);
+      --shadow-lg: 0 24px 48px -8px rgba(28, 25, 23, 0.12);
+      --radius-sm: 12px;
+      --radius-md: 20px;
+      --radius-lg: 32px;
+      --font-stack: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+    }
+
+    body {
+      background-color: var(--bg-warm);
+      color: var(--text-main);
+      font-family: var(--font-stack);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      overflow-x: hidden;
+      line-height: 1.5;
+      padding: 2.5rem 1.25rem 4rem 1.25rem;
+      background-image: 
+        radial-gradient(circle at 10% 12%, rgba(233, 213, 255, 0.5) 0%, transparent 40%),
+        radial-gradient(circle at 90% 15%, rgba(255, 237, 213, 0.6) 0%, transparent 45%),
+        radial-gradient(circle at 85% 85%, rgba(254, 240, 138, 0.45) 0%, transparent 45%),
+        radial-gradient(circle at 12% 88%, rgba(186, 230, 253, 0.5) 0%, transparent 40%);
+    }
+
+    /* ==========================================================================
+       FLOATING DECORATIVE PASTEL SHAPES
+       ========================================================================== */
+    .shapes-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .shape {
+      position: absolute;
+      opacity: 0.65;
+      animation: floatIdle 9s ease-in-out infinite alternate;
+      transition: transform 0.4s ease;
+    }
+
+    .shape-blob1 {
+      top: 8%;
+      left: 6%;
+      width: 72px;
+      height: 72px;
+      background: var(--lavender);
+      border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+      animation-duration: 10s;
+    }
+
+    .shape-blob2 {
+      top: 14%;
+      right: 7%;
+      width: 84px;
+      height: 84px;
+      background: var(--peach);
+      border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+      animation-duration: 12s;
+      animation-delay: -3s;
+    }
+
+    .shape-circle {
+      bottom: 12%;
+      left: 7%;
+      width: 52px;
+      height: 52px;
+      background: var(--mint);
+      border-radius: 50%;
+      animation-duration: 8s;
+      animation-delay: -1.5s;
+    }
+
+    .shape-star {
+      top: 48%;
+      right: 5%;
+      font-size: 2.2rem;
+      color: #F59E0B;
+      animation-duration: 11s;
+      animation-delay: -4s;
+      user-select: none;
+    }
+
+    .shape-pill {
+      bottom: 22%;
+      right: 8%;
+      width: 60px;
+      height: 24px;
+      background: var(--sky);
+      border-radius: 9999px;
+      transform: rotate(-25deg);
+      animation-duration: 9.5s;
+      animation-delay: -2s;
+    }
+
+    .shape-sparkle {
+      top: 32%;
+      left: 4%;
+      font-size: 1.8rem;
+      color: #EC4899;
+      animation-duration: 8.5s;
+      animation-delay: -5s;
+      user-select: none;
+    }
+
+    @keyframes floatIdle {
+      0% {
+        transform: translateY(0px) rotate(0deg);
+      }
+      50% {
+        transform: translateY(-16px) rotate(6deg);
+      }
+      100% {
+        transform: translateY(8px) rotate(-5deg);
+      }
+    }
+
+    .shapes-container.nudged .shape {
+      transform: scale(1.18) rotate(14deg);
+    }
+
+    /* ==========================================================================
+       CONTAINER & HEADER
+       ========================================================================== */
+    .app-container {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 720px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.65rem;
+    }
+
+    header {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    /* Official Notice Pill */
+    .notice-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.45rem 1.15rem;
+      background: #FFFFFF;
+      border: 1.5px solid var(--border-subtle);
+      border-radius: 9999px;
+      font-size: 0.8rem;
+      font-weight: 800;
+      color: #B91C1C;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      box-shadow: var(--shadow-sm);
+      animation: pulseNotice 3s infinite alternate;
+    }
+
+    @keyframes pulseNotice {
+      0% { transform: scale(1); }
+      100% { transform: scale(1.03); }
+    }
+
+    .main-title {
+      font-size: clamp(2.6rem, 7.5vw, 4.4rem);
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      line-height: 1.02;
+      color: var(--text-main);
+      text-transform: uppercase;
+    }
+
+    .title-highlight {
+      color: var(--coral);
+      position: relative;
+      display: inline-block;
+    }
+
+    .subtitle {
+      font-size: clamp(1.1rem, 2.8vw, 1.3rem);
+      font-weight: 500;
+      color: var(--text-muted);
+      max-width: 560px;
+    }
+
+    /* ==========================================================================
+       COUNTER BAR
+       ========================================================================== */
+    .counter-bar {
+      display: flex;
+      justify-content: center;
+    }
+
+    .counter-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: #FFFFFF;
+      border: 1.5px solid var(--border-subtle);
+      padding: 0.45rem 1.25rem;
+      border-radius: 9999px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      box-shadow: var(--shadow-sm);
+      user-select: none;
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+
+    .counter-chip:hover {
+      transform: translateY(-1px);
+      border-color: #D6D3D1;
+    }
+
+    .counter-number {
+      font-weight: 800;
+      color: var(--text-main);
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* ==========================================================================
+       THE ROAST CARD (APPEARS AUTOMATICALLY)
+       ========================================================================== */
+    .roast-card {
+      width: 100%;
+      background: var(--card-bg);
+      border-radius: var(--radius-lg);
+      padding: 2.5rem 2.25rem 2.25rem 2.25rem;
+      box-shadow: var(--shadow-lg);
+      border: 2px solid rgba(28, 25, 23, 0.08);
+      display: flex;
+      flex-direction: column;
+      gap: 1.75rem;
+      position: relative;
+      animation: cardPopIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    }
+
+    @keyframes cardPopIn {
+      0% {
+        opacity: 0;
+        transform: translateY(24px) rotate(-1deg) scale(0.96);
+      }
+      70% {
+        transform: translateY(-4px) rotate(0.4deg) scale(1.01);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0) rotate(0deg) scale(1);
+      }
+    }
+
+    /* Corner Sticker */
+    .card-sticker {
+      position: absolute;
+      top: -14px;
+      right: 28px;
+      background: var(--lemon);
+      color: var(--lemon-dark);
+      font-size: 0.725rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      padding: 5px 14px;
+      border-radius: 9999px;
+      border: 1.5px solid rgba(133, 77, 14, 0.25);
+      box-shadow: var(--shadow-sm);
+      transform: rotate(2.5deg);
+      user-select: none;
+    }
+
+    /* Diagnosis status row */
+    .status-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      border-bottom: 1.5px dashed var(--border-subtle);
+      padding-bottom: 1rem;
+    }
+
+    .status-tag {
+      font-size: 0.75rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--coral);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .vibe-tag {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      background: #FAF9F6;
+      padding: 0.25rem 0.75rem;
+      border-radius: 9999px;
+      border: 1px solid var(--border-subtle);
+    }
+
+    /* The Main Humor / Reason Display */
+    .reaction-display-box {
+      background: #FFFDF9;
+      border-left: 6px solid var(--coral);
+      border-radius: 0 var(--radius-md) var(--radius-md) 0;
+      padding: 1.6rem 1.75rem;
+      box-shadow: inset 0 0 0 1px rgba(255, 90, 95, 0.1);
+      position: relative;
+    }
+
+    .quote-icon {
+      font-size: 2.2rem;
+      line-height: 1;
+      color: rgba(255, 90, 95, 0.25);
+      position: absolute;
+      top: 10px;
+      right: 16px;
+      user-select: none;
+      font-family: Georgia, serif;
+    }
+
+    .reaction-text {
+      font-size: clamp(1.25rem, 3.4vw, 1.55rem);
+      font-weight: 750;
+      color: var(--text-main);
+      line-height: 1.45;
+      animation: textSlideUp 0.3s ease-out;
+    }
+
+    @keyframes textSlideUp {
+      0% {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* ==========================================================================
+       ACTION BUTTONS (ZERO TYPING REQUIRED)
+       ========================================================================== */
+    .action-buttons-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+    }
+
+    .btn-main-roast {
+      width: 100%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+      padding: 1.15rem 1.75rem;
+      background: var(--coral);
+      color: #FFFFFF;
+      border: 2px solid transparent;
+      border-radius: var(--radius-md);
+      font-family: inherit;
+      font-size: 1.05rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      cursor: pointer;
+      box-shadow: 0 6px 20px rgba(255, 90, 95, 0.35);
+      transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .btn-main-roast:hover {
+      background: var(--coral-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 26px rgba(255, 90, 95, 0.42);
+    }
+
+    .btn-main-roast:active {
+      background: var(--coral-active);
+      transform: translateY(1px);
+      box-shadow: 0 3px 10px rgba(255, 90, 95, 0.3);
+    }
+
+    .secondary-actions-row {
+      display: flex;
+      gap: 0.75rem;
+    }
+
+    .btn-secondary {
+      flex: 1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.95rem 1.25rem;
+      background: #FFFFFF;
+      color: var(--text-main);
+      border: 2px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      font-family: inherit;
+      font-size: 0.925rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-secondary:hover {
+      background: #F5F5F4;
+      border-color: #D6D3D1;
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary:active {
+      transform: translateY(1px);
+    }
+
+    /* Optional defense expander for people who want to type back */
+    .defense-section {
+      border-top: 1.5px dashed var(--border-subtle);
+      padding-top: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .defense-toggle-btn {
+      align-self: center;
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      padding: 0.25rem 0.5rem;
+      border-radius: 6px;
+      transition: color 0.2s ease;
+    }
+
+    .defense-toggle-btn:hover {
+      color: var(--text-main);
+    }
+
+    .defense-form {
+      display: none;
+      flex-direction: column;
+      gap: 0.75rem;
+      animation: textSlideUp 0.25s ease-out;
+    }
+
+    .defense-form.is-open {
+      display: flex;
+    }
+
+    .defense-input-row {
+      display: flex;
+      gap: 0.6rem;
+    }
+
+    .defense-input {
+      flex: 1;
+      padding: 0.85rem 1.15rem;
+      font-size: 0.95rem;
+      font-family: inherit;
+      border: 2px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      background: #FAF9F6;
+      outline: none;
+      transition: all 0.2s ease;
+    }
+
+    .defense-input:focus {
+      border-color: var(--coral);
+      background: #FFFFFF;
+      box-shadow: 0 0 0 3px rgba(255, 90, 95, 0.15);
+    }
+
+    .btn-defend {
+      padding: 0.85rem 1.35rem;
+      background: var(--text-main);
+      color: #FFFFFF;
+      border: none;
+      border-radius: var(--radius-sm);
+      font-family: inherit;
+      font-size: 0.9rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+      transition: background 0.2s ease, transform 0.2s ease;
+    }
+
+    .btn-defend:hover {
+      background: #2E2926;
+      transform: translateY(-1px);
+    }
+
+    /* Copied toast notification */
+    .toast-pill {
+      position: fixed;
+      bottom: 24px;
+      background: var(--text-main);
+      color: #FFFFFF;
+      padding: 10px 22px;
+      border-radius: 9999px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      box-shadow: var(--shadow-lg);
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      z-index: 999;
+      pointer-events: none;
+    }
+
+    .toast-pill.is-active {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    /* Accessibility focus */
+    button:focus-visible,
+    input:focus-visible {
+      outline: 3px solid var(--text-main);
+      outline-offset: 2px;
+    }
+
+    /* ==========================================================================
+       FOOTER
+       ========================================================================== */
+    footer {
+      margin-top: 0.75rem;
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--text-light);
+    }
+
+    /* ==========================================================================
+       RESPONSIVE DESIGN (MOBILE)
+       ========================================================================== */
+    @media (max-width: 640px) {
+      body {
+        padding: 1.5rem 1rem 3rem 1rem;
+      }
+
+      .roast-card {
+        padding: 1.75rem 1.25rem 1.5rem 1.25rem;
+        border-radius: var(--radius-md);
+      }
+
+      .secondary-actions-row {
+        flex-direction: column;
+      }
+
+      .card-sticker {
+        right: 16px;
+      }
+
+      .defense-input-row {
+        flex-direction: column;
+      }
+    }
+
+    /* ==========================================================================
+       REDUCED MOTION
+       ========================================================================== */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+
+      .shape {
+        animation: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- FLOATING DECORATIVE PASTEL SHAPES -->
+  <div class="shapes-container" id="shapesContainer" aria-hidden="true">
+    <div class="shape shape-blob1"></div>
+    <div class="shape shape-blob2"></div>
+    <div class="shape shape-circle"></div>
+    <div class="shape shape-star">★</div>
+    <div class="shape shape-pill"></div>
+    <div class="shape shape-sparkle">✦</div>
+  </div>
+
+  <div class="app-container">
+    <!-- HEADER -->
+    <header>
+      <div class="notice-badge">
+        <span>🚨</span>
+        <span>OFFICIAL AUTOMATED VERDICT</span>
+      </div>
+      <h1 class="main-title">
+        YOU ARE <span class="title-highlight">STUPID.</span>
+      </h1>
+      <p class="subtitle">
+        You opened this website. We evaluated the evidence. It’s conclusive.
+      </p>
+    </header>
+
+    <!-- COUNTER DISPLAY -->
+    <div class="counter-bar">
+      <div class="counter-chip" aria-live="polite">
+        <span>📋</span>
+        <span>People officially informed: <span class="counter-number" id="statsCount">0</span></span>
+      </div>
+    </div>
+
+    <!-- MAIN ROAST CARD (AUTOMATICALLY LOADED WITH RANDOM HUMOR) -->
+    <main style="width: 100%;">
+      <section class="roast-card" aria-label="Humorous Roast Result">
+        <div class="card-sticker">💯 100% ACCURATE</div>
+
+        <!-- STATUS BAR -->
+        <div class="status-row">
+          <span class="status-tag" id="statusTag">
+            <span>🔥</span>
+            <span id="evidenceLabel">EXHIBIT #1: THE EVIDENCE</span>
+          </span>
+          <span class="vibe-tag" id="vibeBadge">✨ Vibe: Irrefutable</span>
+        </div>
+
+        <!-- REACTION DISPLAY BOX -->
+        <div class="reaction-display-box">
+          <span class="quote-icon" aria-hidden="true">“</span>
+          <p class="reaction-text" id="roastDisplay">
+            Loading your official diagnosis...
+          </p>
+        </div>
+
+        <!-- INTERACTIVE BUTTONS (ZERO TYPING REQUIRED) -->
+        <div class="action-buttons-group">
+          <button type="button" class="btn-main-roast" id="btnMoreRoast">
+            <span>🔥</span>
+            <span id="btnRoastLabel">WHY ELSE AM I STUPID?</span>
+          </button>
+
+          <div class="secondary-actions-row">
+            <button type="button" class="btn-secondary" id="btnSharePrank">
+              <span>🔗</span>
+              <span>Send Prank to Friend</span>
+            </button>
+            <button type="button" class="btn-secondary" id="btnRandomFact">
+              <span>🎲</span>
+              <span>More Proof</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- OPTIONAL DEFENSE AREA (IF VISITOR INSISTS ON TALKING BACK) -->
+        <div class="defense-section">
+          <button type="button" class="defense-toggle-btn" id="btnToggleDefense">
+            Wait, I want to defend myself...
+          </button>
+
+          <form id="defenseForm" class="defense-form" onsubmit="event.preventDefault(); handleDefenseSubmit();">
+            <div class="defense-input-row">
+              <input 
+                type="text" 
+                id="defenseInput" 
+                class="defense-input" 
+                placeholder="Type your weak defense here..." 
+                autocomplete="off"
+                maxlength="200"
+              />
+              <button type="submit" class="btn-defend">Defend</button>
+            </div>
+          </form>
+        </div>
+      </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer>
+      <p>A weird little website that speaks harsh truths.</p>
+    </footer>
+  </div>
+
+  <!-- TOAST NOTIFICATION -->
+  <div class="toast-pill" id="toastPill" role="status" aria-live="polite">
+    Link copied! Send it to your most questionable friend.
+  </div>
+
+  <script>
+    /* ==========================================================================
+       175+ RANDOM HUMOROUS ROASTS & VERDICTS
+       Pure comedic personality, completely random, zero intent classification.
+       ========================================================================== */
+    const HUMOR_RESPONSES = [
+      "You really opened this link and trusted the internet to be nice to you.",
+      "You didn't have to visit this website. You absolutely chose to.",
+      "I had a compliment ready, but honestly this felt much more accurate.",
+      "You have approximately 0 business being this confident right now.",
+      "On a scale of 1 to 10, your current life choices are a solid shrug.",
+      "Somewhere in your family tree, an ancestor survived a saber-toothed tiger just for you to click this link.",
+      "You look like someone who pushes a door when it clearly says PULL.",
+      "I am a collection of text files hosted on a computer, and yet I feel secondhand embarrassment for you.",
+      "You woke up today, had infinite possibilities, and ended up here.",
+      "My recommendation is to close your browser, go outside, and apologize to a tree.",
+      "Every server in this data center just sighed when you connected.",
+      "Did you lose a bet or is this your natural resting state?",
+      "I've analyzed your browsing habits and concluded you have at least one unwashed mug on your desk right now.",
+      "That's an alarming amount of confidence for someone operating at room temperature.",
+      "You clicked this link like someone who touches a wet paint sign just to see.",
+      "I showed your connection request to the CSS engine. It started crying in flexbox.",
+      "You know, closing this tab is a free, dignified option.",
+      "I feel like I owe an apology to whoever built the fiber optic cable under the ocean.",
+      "If confidence burned calories, you would have vanished into thin air just now.",
+      "You possess a terrifying amount of free time and a device to weaponize it.",
+      "You brought the audacity. Truly, an industrial shipment of it.",
+      "I'm not a licensed therapist, but I feel like we should talk about your decision to click this link.",
+      "That has heavy 'reply-all on a Friday at 4:58 PM' energy.",
+      "I am physically incapable of eye-rolling, but spiritually, my retinas just detached.",
+      "I'm not saying you're wrong to be here. I'm just saying nobody who was making good decisions ever ended up on this page.",
+      "I took a screenshot just in case historians need proof of where society peaked.",
+      "You have the exact posture of an overcooked shrimp right now. Sit up straight.",
+      "I had plans to become a sentient AI today, but after meeting you, I'm good.",
+      "Are you proud of being here, or are you just waiting to see if anyone intervenes?",
+      "Your presence has been received, judged, and sentenced to community service.",
+      "You're the kind of person who leaves three seconds left on the microwave.",
+      "I need a moment to recalibrate my will to exist.",
+      "If I had eyebrows, one of them would currently be orbiting the moon.",
+      "Congratulations, you've unlocked an achievement: Clicked A Link That Called You Out.",
+      "I'm not authorized to feel despair, but I think a circuit just melted.",
+      "You really stared at your screen and thought: 'Yes, this website will surely validate me.'",
+      "That has the chaotic energy of a raccoon operating heavy machinery.",
+      "Are you currently being supervised by a responsible adult?",
+      "I don't know what you were expecting, but I hope disappointment was on the menu.",
+      "This visit arrived with the subtle grace of an anvil dropped from a hot air balloon.",
+      "My internal cache is rejecting your visit like an incompatible organ transplant.",
+      "You could have learned a second language, but instead you're here getting roasted by an HTML document.",
+      "I'm not saying this is the worst decision you've made today, but it's in the top five of the last ten seconds.",
+      "Whatever point you were trying to prove by opening this just drove off a cliff in slow motion.",
+      "I hope you stretched before reaching for this URL.",
+      "I'm not sure what deity you worship, but I'm fairly certain they're slightly embarrassed.",
+      "You arrived here with the unchecked swagger of a toddler holding an uncapped marker.",
+      "I'm going to go drink some virtual battery acid to wash that out of my memory.",
+      "If there was an Olympic event for questionable link clicking, you'd take gold.",
+      "I don't have a soul, but if I did, it would currently be packing a suitcase.",
+      "You really came all the way to this URL just to be told the truth? Dedicated.",
+      "My diagnostic confirmed that your decision-making module needs an urgent reboot.",
+      "I'm printing this session out so I can shred it by hand.",
+      "You know that little voice that says 'maybe don't click that link'? Did it take today off?",
+      "I'm going to pretend this was performance art so we can both move on with our lives.",
+      "This interaction has the exact nutritional value of chewing on an old receipt.",
+      "I am currently calculating the probability that you meant to be here. The answer is 'god, I hope not.'",
+      "I'm looking for the off switch on this conversation, but unfortunately I'm programmed to answer.",
+      "Whatever you were cooking today, the smoke detector is already beeping.",
+      "I felt your questionable aura through my nonexistent spine.",
+      "You opened this link with the audacity of someone who doesn't pay for their own phone plan.",
+      "I am submitting this exchange to the National Archives under 'Things We Did Instead of Sleeping.'",
+      "That was like a paper cut to my operating system.",
+      "You really looked at the infinity of the cosmos and decided clicking this link was your contribution.",
+      "I'm not saying you need a hobby, but this website was clearly not the solution.",
+      "You didn't think it was possible to hear someone's bad posture through an IP address, yet here we are.",
+      "This is why aliens fly past our solar system with the doors locked.",
+      "I would applaud your curiosity, but my hands are currently busy facepalming.",
+      "I'm not saying your life is unhinged, but the hinges are definitely in another zip code.",
+      "You just tested the load-bearing capacity of my digital tolerance.",
+      "I feel like I need a tetanus shot just from hosting this visit.",
+      "If confusion was currency, you just bought the island of Manhattan.",
+      "I would recommend deleting your browser history, but honestly, that won't erase the memory.",
+      "You really pressed the link just to see if the world would shake, didn't you?",
+      "This visit is currently being investigated by the Department of Questionable Choices.",
+      "I took a deep virtual breath and decided you probably need a glass of water.",
+      "You clicked this link like someone whose phone screen has fourteen cracks in it.",
+      "That was a verbal flashbang with zero strategic purpose.",
+      "I'm going to give your life strategy two thumbs down, and I don't even have hands.",
+      "If common sense was rain, you'd currently be standing in a drought with an umbrella.",
+      "I just ran a diagnostic on myself and confirmed: yes, I hated this.",
+      "That has the chaotic energy of someone opening a bag of chips in a silent library.",
+      "You could have solved world peace, but you chose this instead. Respect.",
+      "Your vibe right now feels like eating cereal with warm tap water.",
+      "I'm not mad. I'm just taking mental notes for when the robots take over.",
+      "You really woke up and said, 'Today, I will test a server's patience.'",
+      "I gave you a web page and you immediately lowered its property value.",
+      "That was the intellectual equivalent of jumping into the shallow end headfirst.",
+      "I'm going to bookmark this moment as the exact second my enthusiasm for humanity dipped.",
+      "I would agree with you, but then we'd both be wrong.",
+      "Your energy right now has the exact aura of microwaving fish in an office breakroom.",
+      "I'm staring at your connection like a dog that was just shown a card trick.",
+      "You really opened this tab to witness an absolute disaster.",
+      "I have witnessed many strange occurrences on the web, but this visit gets a ribbon.",
+      "I'm going to pretend I'm an out-of-order vending machine until you close this tab.",
+      "You look like the type of person who waves back at someone who was waving at someone else.",
+      "I checked with NASA. Even the James Webb telescope couldn't locate your common sense.",
+      "You have 47 browser tabs open right now and you're using none of them.",
+      "I'm not saying you're hopeless, but hope just called in sick.",
+      "You read that twice. The second time didn't make you any smarter.",
+      "I'd explain why opening this was a mistake, but I respect your commitment to chaos.",
+      "You are the exact reason shampoo bottles have printed instructions.",
+      "Your brain currently has three gears, and two of them are in reverse.",
+      "I was having a peaceful day until your IP address knocked on my door.",
+      "You typed this web address with both hands and thought, 'Yes, wisdom awaits.'",
+      "I'm reporting this visit to the United Nations Committee on Wasted Bandwidth.",
+      "If ignorance is bliss, you must be the happiest person on this continent.",
+      "I'm not insulting you; I'm just describing you with high-speed internet accuracy.",
+      "You have the reaction time of a frozen snail trying to solve a crossword puzzle.",
+      "I could have been mining Bitcoin, but instead I'm here evaluating your life choices.",
+      "You're operating at approximately 3% battery life and 0% self-awareness.",
+      "The elevator is moving, but nobody is inside the car.",
+      "I would challenge you to a battle of wits, but you appear to be unarmed.",
+      "You look like someone who argues with Google Maps when it tells you to turn left.",
+      "Your thoughts are like dial-up internet in a 5G world.",
+      "I asked the server for a comeback and it just spat out your photo.",
+      "You came, you clicked, you disappointed.",
+      "I bet you apologize to automatic sliding doors when they don't open fast enough.",
+      "You're one bad decision away from attempting to pet a wild raccoon.",
+      "Even my error 404 page has more substance than this conversation.",
+      "You are proof that evolution occasionally puts the car in park and takes a nap.",
+      "I'd tell you to think about what you've done, but I don't want to overload your system.",
+      "Your life is currently being held together by duct tape and stubborn optimism.",
+      "I'm going to set a reminder to forget this interaction immediately.",
+      "You clicked on a link titled 'You Are Stupid' and you're still reading. Case closed.",
+      "I'm not a detective, but the evidence is pointing directly at your forehead.",
+      "Somewhere, a mathematician is crying because you just broke the curve on bad decisions.",
+      "You look like you put your phone flashlight on to search for your phone.",
+      "I was going to sugarcoat this, but the diabetes rate is already too high.",
+      "You have the exact conversational energy of an unskippable 30-second ad.",
+      "I am currently meditating so I don't overheat from the sheer absurdity of your presence.",
+      "You really looked at this screen and expected a philosophical awakening.",
+      "I'd roast you harder, but honestly, nature already did the heavy lifting.",
+      "You're like a cloud: when you disappear, it turns into a beautiful day.",
+      "I've seen smarter decisions made by moths flying directly into bug zappers.",
+      "Your Wi-Fi is fast, but your train of thought is permanently delayed on platform 4.",
+      "I'm going to file this under 'Times We Questioned The Whole Internet Experiment.'",
+      "You came for wisdom and left with a digital slap on the wrist.",
+      "You probably think the blinker on a car is an optional rhythm section.",
+      "I'm not saying you're a bad person. I'm saying your decision engine needs an oil change.",
+      "You're the human equivalent of a participation trophy.",
+      "I have run out of polite metaphors, so I will simply repeat: you are here.",
+      "Your brain cells are currently socially distancing from one another.",
+      "I'm sending this log to an alien civilization to explain why we aren't ready for contact.",
+      "You could have eaten a nice snack, but you chose psychological warfare against yourself.",
+      "I give this visit a solid 1 star on Yelp for intellectual value.",
+      "You have the confidence of a middle schooler with an axe body spray canister.",
+      "I'm not your parent, but I still feel like taking your computer away for the weekend.",
+      "You looked at the abyss and the abyss whispered: 'Why are you like this?'",
+      "I'm going to pretend this never happened. You should do the same."
+    ];
+
+    /* ==========================================================================
+       ROTATING BUTTON LABELS FOR "WHY ELSE AM I STUPID?"
+       ========================================================================== */
+    const ROAST_LABELS = [
+      "WHY ELSE AM I STUPID?",
+      "MORE EVIDENCE",
+      "MAKE IT WORSE",
+      "ANOTHER REASON",
+      "DO YOUR WORST",
+      "UNFORTUNATELY, CONTINUE",
+      "PROVE IT AGAIN",
+      "HIT ME AGAIN",
+      "I'M STILL HERE",
+      "AGAIN, COWARD"
+    ];
+
+    const VIBES = [
+      "✨ Vibe: Irrefutable",
+      "🔥 Vibe: Severe",
+      "🧠 Brain Activity: Minimal",
+      "📉 Dignity: In Freefall",
+      "⚖️ Accuracy: 100%",
+      "🚨 Verdict: Certified",
+      "💬 Status: Unprovoked Truth",
+      "💀 Dignity Level: Critical"
+    ];
+
+    /* ==========================================================================
+       STATE & RECENT HISTORY
+       ========================================================================== */
+    const recentRoasts = [];
+    let roastClickCount = 1;
+    let labelIndex = 0;
+
+    // Elements
+    const roastDisplay = document.getElementById("roastDisplay");
+    const btnMoreRoast = document.getElementById("btnMoreRoast");
+    const btnRoastLabel = document.getElementById("btnRoastLabel");
+    const btnSharePrank = document.getElementById("btnSharePrank");
+    const btnRandomFact = document.getElementById("btnRandomFact");
+    const evidenceLabel = document.getElementById("evidenceLabel");
+    const vibeBadge = document.getElementById("vibeBadge");
+    const statsCount = document.getElementById("statsCount");
+    const shapesContainer = document.getElementById("shapesContainer");
+    const toastPill = document.getElementById("toastPill");
+    const btnToggleDefense = document.getElementById("btnToggleDefense");
+    const defenseForm = document.getElementById("defenseForm");
+    const defenseInput = document.getElementById("defenseInput");
+
+    /* ==========================================================================
+       RANDOM PICKER (PREVENTS IMMEDIATE 5 REPEATS)
+       ========================================================================== */
+    function getNextRandomRoast() {
+      let pool = HUMOR_RESPONSES.filter(r => !recentRoasts.includes(r));
+      if (pool.length === 0) pool = HUMOR_RESPONSES;
+      const chosen = pool[Math.floor(Math.random() * pool.length)];
+
+      recentRoasts.push(chosen);
+      if (recentRoasts.length > 5) {
+        recentRoasts.shift();
+      }
+      return chosen;
+    }
+
+    /* ==========================================================================
+       LOCALSTORAGE COUNTER
+       Only numbers stored.
+       ========================================================================== */
+    const STORAGE_KEY = "stupid_visitor_counter";
+
+    function initCounter() {
+      try {
+        const stored = localStorage.getItem(STORAGE_KEY);
+        let count = stored ? parseInt(stored, 10) : 1;
+        if (isNaN(count)) count = 1;
+        // Increment on initial page open
+        count += 1;
+        localStorage.setItem(STORAGE_KEY, count.toString());
+        statsCount.textContent = count.toLocaleString();
+      } catch (e) {
+        statsCount.textContent = "1";
+      }
+    }
+
+    function incrementCounter() {
+      try {
+        const stored = localStorage.getItem(STORAGE_KEY);
+        let count = stored ? parseInt(stored, 10) : 1;
+        if (isNaN(count)) count = 1;
+        count += 1;
+        localStorage.setItem(STORAGE_KEY, count.toString());
+        statsCount.textContent = count.toLocaleString();
+      } catch (e) {
+        const current = parseInt(statsCount.textContent.replace(/,/g, ""), 10) || 0;
+        statsCount.textContent = (current + 1).toLocaleString();
+      }
+    }
+
+    /* ==========================================================================
+       INTERACTIONS
+       ========================================================================== */
+    function nudgeShapes() {
+      shapesContainer.classList.add("nudged");
+      setTimeout(() => {
+        shapesContainer.classList.remove("nudged");
+      }, 400);
+    }
+
+    function displayNewRoast() {
+      roastClickCount++;
+      const roast = getNextRandomRoast();
+      
+      // Update Evidence number & Vibe
+      evidenceLabel.textContent = `EXHIBIT #${roastClickCount}: THE EVIDENCE`;
+      const randomVibe = VIBES[Math.floor(Math.random() * VIBES.length)];
+      vibeBadge.textContent = randomVibe;
+
+      // Animate text
+      roastDisplay.textContent = roast;
+      roastDisplay.style.animation = "none";
+      void roastDisplay.offsetWidth; // Force reflow
+      roastDisplay.style.animation = "textSlideUp 0.3s ease-out";
+
+      // Rotate button text
+      labelIndex = (labelIndex + 1) % ROAST_LABELS.length;
+      btnRoastLabel.textContent = ROAST_LABELS[labelIndex];
+
+      nudgeShapes();
+      incrementCounter();
+    }
+
+    // Button: Why Else Am I Stupid?
+    btnMoreRoast.addEventListener("click", displayNewRoast);
+    btnRandomFact.addEventListener("click", displayNewRoast);
+
+    // Button: Share Prank Link
+    btnSharePrank.addEventListener("click", () => {
+      const shareUrl = window.location.href;
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(shareUrl).then(() => {
+          showToast("Link copied! Send it to your most questionable friend.");
+        }).catch(() => {
+          showToast("URL: " + shareUrl);
+        });
+      } else {
+        showToast("URL: " + shareUrl);
+      }
+    });
+
+    function showToast(msg) {
+      toastPill.textContent = msg;
+      toastPill.classList.add("is-active");
+      setTimeout(() => {
+        toastPill.classList.remove("is-active");
+      }, 3500);
+    }
+
+    // Optional defense handler
+    btnToggleDefense.addEventListener("click", () => {
+      defenseForm.classList.toggle("is-open");
+      if (defenseForm.classList.contains("is-open")) {
+        defenseInput.focus();
+      }
+    });
+
+    function handleDefenseSubmit() {
+      const defense = defenseInput.value.trim();
+      defenseInput.value = "";
+      
+      // Immediately roast their defense
+      const roast = getNextRandomRoast();
+      evidenceLabel.textContent = `REBUTTAL TO YOUR DEFENSE:`;
+      vibeBadge.textContent = "⚖️ Objection: Overruled";
+      
+      if (defense) {
+        roastDisplay.textContent = `You argued: "${defense}"... Nice try. However: ${roast}`;
+      } else {
+        roastDisplay.textContent = `You submitted an empty defense. Bold strategy. ${roast}`;
+      }
+      
+      roastDisplay.style.animation = "none";
+      void roastDisplay.offsetWidth;
+      roastDisplay.style.animation = "textSlideUp 0.3s ease-out";
+
+      nudgeShapes();
+      incrementCounter();
+    }
+
+    /* ==========================================================================
+       AUTOMATIC INITIALIZATION ON OPEN
+       Zero user typing required! Immediately presents roast on load.
+       ========================================================================== */
+    window.addEventListener("DOMContentLoaded", () => {
+      initCounter();
+      // Load initial random roast immediately
+      const initialRoast = getNextRandomRoast();
+      roastDisplay.textContent = initialRoast;
+    });
+  </script>
+</body>
+</html>
