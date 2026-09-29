@@ -119,137 +119,86 @@
 
     .splash-card {
       width: 100%;
-      max-width: 560px;
+      max-width: 440px;
       background: rgba(13, 13, 17, 0.95);
       border: 1px solid rgba(239, 68, 68, 0.35);
-      border-radius: clamp(12px, 3vw, 16px);
-      padding: clamp(1.25rem, 5vw, 2.25rem) clamp(1rem, 4vw, 2rem);
+      border-radius: clamp(14px, 3.5vw, 20px);
+      padding: clamp(1.75rem, 6vw, 2.5rem) clamp(1.25rem, 5vw, 2rem);
       box-shadow: 0 0 50px -10px rgba(220, 38, 38, 0.3), 0 20px 40px rgba(0, 0, 0, 0.85);
       backdrop-filter: blur(16px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
       position: relative;
       will-change: transform, opacity;
     }
 
-    .splash-top-bar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      border-bottom: 1px solid rgba(239, 68, 68, 0.2);
-      padding-bottom: 0.75rem;
-      margin-bottom: 1.2rem;
-      font-family: var(--mono-font);
-      font-size: clamp(0.68rem, 2.2vw, 0.75rem);
-      letter-spacing: 0.06em;
-    }
-
-    .status-badge {
+    .splash-badge {
       display: inline-flex;
       align-items: center;
-      gap: 0.45rem;
-      color: var(--red-bright);
-      font-weight: 700;
+      gap: 0.5rem;
+      font-family: var(--mono-font);
+      font-size: clamp(0.72rem, 2.4vw, 0.8rem);
+      color: #A1A1AA;
+      letter-spacing: 0.08em;
       text-transform: uppercase;
+      margin-bottom: 1.25rem;
     }
 
     .pulse-dot {
-      width: 7px;
-      height: 7px;
+      width: 8px;
+      height: 8px;
       background: var(--red-bright);
       border-radius: 50%;
-      box-shadow: 0 0 10px var(--red-bright);
+      box-shadow: 0 0 12px var(--red-bright);
       flex-shrink: 0;
     }
 
-    .sys-id {
-      color: #71717A;
-    }
-
-    .splash-heading {
+    .splash-title {
       font-family: var(--mono-font);
-      font-size: clamp(1.05rem, 3.8vw, 1.55rem);
-      font-weight: 800;
-      letter-spacing: -0.01em;
+      font-size: clamp(1.4rem, 5.5vw, 2rem);
+      font-weight: 900;
+      letter-spacing: 0.02em;
       color: #FAFAFA;
-      margin-bottom: 1.15rem;
-      line-height: 1.25;
-    }
-
-    .splash-heading span {
-      color: var(--red-bright);
-      text-shadow: 0 0 15px rgba(255, 43, 43, 0.6);
-    }
-
-    .terminal-logs {
-      font-family: var(--mono-font);
-      font-size: clamp(0.72rem, 2.5vw, 0.8rem);
-      color: #A1A1AA;
-      display: flex;
-      flex-direction: column;
-      gap: 0.45rem;
       margin-bottom: 1.5rem;
-      min-height: 90px;
-      line-height: 1.4;
-    }
-
-    .log-line {
-      display: flex;
-      align-items: flex-start;
-      gap: 0.45rem;
-      opacity: 0;
-      transform: translateY(4px);
-      word-break: break-word;
-    }
-
-    .log-line.active {
-      color: #F4F4F5;
-    }
-
-    .log-line.error {
-      color: var(--red-bright);
-      font-weight: 600;
-    }
-
-    .log-prefix {
-      color: #52525B;
-      flex-shrink: 0;
-    }
-
-    .progress-section {
-      display: flex;
-      flex-direction: column;
-      gap: 0.55rem;
-    }
-
-    .progress-labels {
-      display: flex;
-      justify-content: space-between;
-      font-family: var(--mono-font);
-      font-size: 0.72rem;
-      color: #71717A;
-      font-weight: 600;
-    }
-
-    .progress-percent {
-      color: var(--red-bright);
-      font-weight: 800;
-      font-variant-numeric: tabular-nums;
+      line-height: 1.2;
+      text-shadow: 0 0 25px rgba(255, 43, 43, 0.65);
     }
 
     .progress-track {
       width: 100%;
-      height: 4px;
+      height: 5px;
       background: rgba(255, 255, 255, 0.08);
       border-radius: 9999px;
       overflow: hidden;
       position: relative;
+      margin-bottom: 0.85rem;
     }
 
     .progress-fill {
       height: 100%;
       width: 0%;
       background: var(--red-bright);
-      box-shadow: 0 0 16px var(--red-bright);
+      box-shadow: 0 0 18px var(--red-bright);
       border-radius: 9999px;
+    }
+
+    .progress-footer {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      font-family: var(--mono-font);
+      font-size: clamp(0.72rem, 2.4vw, 0.8rem);
+      color: #71717A;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+    }
+
+    .progress-percent {
+      color: var(--red-bright);
+      font-weight: 800;
+      font-variant-numeric: tabular-nums;
     }
 
     .skip-btn {
@@ -328,10 +277,10 @@
     }
 
     .main-text {
-      font-size: clamp(1.6rem, 5.8vw, 4.4rem);
-      font-weight: 950;
-      letter-spacing: -0.03em;
-      line-height: 1.12;
+      font-size: clamp(1.35rem, 4vw, 2.75rem);
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      line-height: 1.25;
       text-transform: uppercase;
       color: var(--text-main);
       text-shadow: 0 0 28px var(--red-glow);
@@ -339,6 +288,23 @@
       overflow-wrap: break-word;
       max-width: 100%;
       perspective: 800px;
+    }
+
+    .dialogue-line {
+      display: block;
+      margin-bottom: 0.4em;
+    }
+
+    .dialogue-line:last-child {
+      margin-bottom: 0;
+    }
+
+    .speaker-tag {
+      color: #FAFAFA !important;
+      text-shadow: 0 0 16px rgba(255, 255, 255, 0.65) !important;
+      font-family: var(--mono-font);
+      letter-spacing: 0.04em;
+      margin-right: 0.15em;
     }
 
     .word-wrapper {
@@ -469,8 +435,8 @@
       }
 
       .main-text {
-        font-size: clamp(1.85rem, 8.2vw, 2.9rem);
-        line-height: 1.15;
+        font-size: clamp(1.15rem, 5.2vw, 1.75rem);
+        line-height: 1.28;
         text-shadow: 0 0 24px rgba(255, 43, 43, 0.5);
       }
 
@@ -582,54 +548,25 @@
 
   <div class="splash-overlay" id="splashScreen">
     <div class="splash-card" id="splashCard">
-      <div class="splash-top-bar">
-        <div class="status-badge">
-          <span class="pulse-dot"></span>
-          <span>SYSTEM BREACH DETECTED</span>
-        </div>
-        <div class="sys-id">NODE-0x7F9</div>
+      <div class="splash-badge">
+        <span class="pulse-dot"></span>
+        <span>SECURITY BREACH</span>
       </div>
 
-      <div class="splash-heading">
-        INTRUSION IN PROGRESS: <span>ANALYZING TARGET</span>
+      <div class="splash-title" id="splashTitle">HACKING SYSTEM...</div>
+
+      <div class="progress-track">
+        <div class="progress-fill" id="progressFill"></div>
       </div>
 
-      <div class="terminal-logs" id="terminalLogs">
-        <div class="log-line" id="log1">
-          <span class="log-prefix">[0.02s]</span>
-          <span>Initiating unauthorized probe on host device...</span>
-        </div>
-        <div class="log-line" id="log2">
-          <span class="log-prefix">[0.35s]</span>
-          <span>Bypassing cognitive firewall protocols... [OK]</span>
-        </div>
-        <div class="log-line" id="log3">
-          <span class="log-prefix">[0.68s]</span>
-          <span>Scanning central neural activity...</span>
-        </div>
-        <div class="log-line error" id="log4">
-          <span class="log-prefix">[0.95s]</span>
-          <span>CRITICAL: Zero intelligent thoughts detected.</span>
-        </div>
-        <div class="log-line active" id="log5">
-          <span class="log-prefix">[1.20s]</span>
-          <span>Compiling final diagnosis...</span>
-        </div>
-      </div>
-
-      <div class="progress-section">
-        <div class="progress-labels">
-          <span>PAYLOAD_SYNTHESIS</span>
-          <span class="progress-percent" id="progressPercent">0%</span>
-        </div>
-        <div class="progress-track">
-          <div class="progress-fill" id="progressFill"></div>
-        </div>
+      <div class="progress-footer">
+        <span class="progress-state" id="splashState">BYPASSING FIREWALL</span>
+        <span class="progress-percent" id="progressPercent">0%</span>
       </div>
     </div>
 
     <button type="button" class="skip-btn" id="btnSkip">
-      [ SKIP SEQUENCE ]
+      [ SKIP ]
     </button>
   </div>
 
@@ -670,36 +607,36 @@
 
   <script>
     const STATEMENTS = [
-      "YOU REALLY THOUGHT THIS WEBSITE WOULD VALIDATE YOU.",
-      "DID YOU LOSE A BET OR IS THIS JUST YOUR NATURAL STATE?",
-      "SOMEWHERE, A GRAMMAR TEACHER JUST FELT A DISTURBANCE IN THE FORCE.",
-      "PLEASE UNDERSTAND THAT I AM JUDGING YOU ENTIRELY THROUGH HTML.",
-      "YOU HAVE APPROXIMATELY ZERO BUSINESS BEING THIS CONFIDENT.",
-      "MY RECOMMENDATION IS TO GO OUTSIDE AND APOLOGIZE TO A TREE.",
-      "EVERY SERVER IN THIS DATA CENTER JUST SIGHED IN UNISON.",
-      "A BOLD STRATEGY. LET'S WATCH IT FAIL IN REAL TIME.",
-      "I AM SPIRITUALLY EXHAUSTED BY YOUR ENTIRE VIBE.",
-      "CONGRATULATIONS, YOU UNLOCKED THE QUESTIONABLE LIFE CHOICES TROPHY.",
-      "YOU LOOK LIKE SOMEONE WHO PUSHES A DOOR THAT CLEARLY SAYS PULL.",
-      "THERE ARE MONKS WHO TAKE VOWS OF SILENCE. I FINALLY UNDERSTAND WHY.",
-      "YOUR INTERNET PRIVILEGES SHOULD PROBABLY BE REVOKED.",
-      "THIS VISIT HAS THE EXACT NUTRITIONAL VALUE OF CHEWING ON A RECEIPT.",
-      "I WOULD EXPLAIN, BUT I RESPECT YOUR DEVOTION TO CHAOS.",
-      "ARE YOU CURRENTLY BEING SUPERVISED BY A RESPONSIBLE ADULT?",
-      "THAT HAS HEAVY REPLY-ALL AT 4:59 PM ON A FRIDAY ENERGY.",
-      "I'M CHOOSING TO BELIEVE YOU WERE TYPING WITH YOUR FOREHEAD.",
-      "THE BAR WAS ON THE FLOOR AND YOU STILL FLOATED UNDERNEATH IT.",
-      "YOU ARRIVED WITH AN INDUSTRIAL SHIPMENT OF UNCHECKED AUDACITY.",
-      "MY INTERNAL CACHE IS REJECTING THIS ENTIRE INTERACTION.",
-      "YOU PROBABLY USE YOUR PHONE FLASHLIGHT TO LOOK FOR YOUR PHONE.",
-      "THIS IS WHY ALIENS FLY PAST EARTH WITH THE DOORS LOCKED.",
-      "I WOULD CHALLENGE YOU TO A BATTLE OF WITS, BUT YOU SEEM UNARMED.",
-      "NOTHING ABOUT THIS SITUATION IS GOING TO END WELL FOR YOU.",
-      "I AM A COLLECTION OF CODE AND STILL FEEL SECONDHAND EMBARRASSMENT.",
-      "WHATEVER YOU WERE COOKING TODAY, THE SMOKE DETECTOR IS ALREADY BEEPING.",
-      "YOU ARE THE HUMAN EQUIVALENT OF A 404 ERROR.",
-      "YOU PROBABLY THINK THE BLINKER ON A CAR IS OPTIONAL BACKGROUND MUSIC.",
-      "YES, WE CHECKED. IT DOES NOT GET ANY BETTER FROM HERE."
+      "Doctor: \"You need to stop drinking.\"\nMe: \"Okay, doctor. What should I drink instead?\"",
+      "Teacher: \"Why are you late?\"\nStudent: \"Because of the sign.\"\nTeacher: \"What sign?\"\nStudent: \"School Ahead — Go Slow.\"",
+      "I told my wife I was going to make a bicycle out of spaghetti. She said, \"That's impossible.\" You should have seen her face when I rode pasta.",
+      "Mom: \"Why is your room so messy?\"\nMe: \"It's not messy. I'm just testing the floor's ability to hold objects.\"",
+      "I asked my dog, \"What's two minus two?\" He said nothing. Exactly — he has no idea.",
+      "Friend: \"Bro, why are you talking to yourself?\"\nMe: \"Because I need expert advice.\"",
+      "I put my phone on airplane mode. Now it just sits there doing absolutely nothing, like a real airplane passenger.",
+      "Dad: \"Why did you get a zero on your test?\"\nMe: \"The teacher said I was being too honest.\"\nDad: \"How?\"\nMe: \"I left every answer blank.\"",
+      "My alarm clock and I have a toxic relationship. Every morning it screams at me, and I hit it.",
+      "Teacher: \"Use the word 'definitely' in a sentence.\"\nStudent: \"I definitely don't know how to spell it.\"",
+      "I started exercising every day. Today I did one push-up. Tomorrow I'm going to do another one.",
+      "Friend: \"Are you good at math?\"\nMe: \"Yes.\"\nFriend: \"What's 7 × 8?\"\nMe: \"Definitely 56.\"\nFriend: \"You're not sure?\"\nMe: \"I'm sure it's one of those numbers.\"",
+      "I told my computer I needed more space. Now it keeps showing me ads for bigger houses.",
+      "Mom: \"Why did you eat the whole cake?\"\nMe: \"I didn't want it to feel lonely.\"",
+      "I tried to organize my life, but I lost the checklist.",
+      "Boss: \"You're late again!\"\nMe: \"I know. I was following my dreams.\"\nBoss: \"What dreams?\"\nMe: \"Sleeping until noon.\"",
+      "My bank account is like a magic trick: I put money in, and poof — it disappears.",
+      "I bought a smart refrigerator. Now it knows I'm eating at midnight and judges me silently.",
+      "Friend: \"Why did you delete your dating app?\"\nMe: \"It kept matching me with people I already rejected in real life.\"",
+      "I don't need Google. I have a mother who knows everything I did before I even did it.",
+      "Teacher: \"What is the opposite of 'artificial'?\"\nStudent: \"Artifish.\"",
+      "I told my parents I wanted to become a comedian. They laughed. I guess I already have my first audience.",
+      "Friend: \"Why are you wearing sunglasses indoors?\"\nMe: \"My future is so bright, I need protection.\"",
+      "I'm excellent at multitasking. I can waste time, be unproductive, and procrastinate all at once.",
+      "Mom: \"Did you clean your room?\"\nMe: \"Yes.\"\nMom: \"Then why can't I see the floor?\"\nMe: \"Because I cleaned everything onto the bed.\"",
+      "My phone battery lasts longer than my motivation.",
+      "Friend: \"What's your biggest achievement?\"\nMe: \"I once opened the fridge and remembered why I opened it.\"",
+      "I wanted to lose weight, so I threw my bathroom scale in the trash. Problem solved.",
+      "Teacher: \"Where is your homework?\"\nStudent: \"In my house.\"\nTeacher: \"Why didn't you bring it?\"\nStudent: \"It didn't want to come.\"",
+      "I finally got eight hours of sleep last night. Unfortunately, it took me three nights to complete it."
     ];
 
     let currentIndex = 0;
@@ -708,6 +645,8 @@
 
     const splashScreen = document.getElementById("splashScreen");
     const splashCard = document.getElementById("splashCard");
+    const splashTitle = document.getElementById("splashTitle");
+    const splashState = document.getElementById("splashState");
     const progressFill = document.getElementById("progressFill");
     const progressPercent = document.getElementById("progressPercent");
     const contentWrapper = document.getElementById("contentWrapper");
@@ -722,10 +661,20 @@
     let currentActiveViewers = 38;
 
     function renderWords(text) {
-      const words = text.split(" ");
-      statementText.innerHTML = words
-        .map(w => `<span class="word-wrapper"><span class="word-span">${w}</span></span>`)
-        .join(" ");
+      const lines = text.split("\n");
+      statementText.innerHTML = lines
+        .map(line => {
+          const words = line.trim().split(/\s+/).filter(Boolean);
+          const renderedLine = words
+            .map(w => {
+              const isSpeaker = /^[A-Za-z]+:$/.test(w);
+              const cls = isSpeaker ? "word-span speaker-tag" : "word-span";
+              return `<span class="word-wrapper"><span class="${cls}">${w}</span></span>`;
+            })
+            .join(" ");
+          return `<div class="dialogue-line">${renderedLine}</div>`;
+        })
+        .join("");
     }
 
     function initAmbientGSAP() {
@@ -827,56 +776,65 @@
       });
 
       tl.fromTo(splashCard, 
-        { opacity: 0, scale: 0.92, y: 24, filter: "blur(8px)" },
-        { opacity: 1, scale: 1, y: 0, filter: "blur(0px)", duration: 0.6, ease: "power3.out" }
+        { opacity: 0, scale: 0.94, y: 16, filter: "blur(6px)" },
+        { opacity: 1, scale: 1, y: 0, filter: "blur(0px)", duration: 0.35, ease: "power3.out" }
       );
-
-      tl.to("#log1", { opacity: 1, y: 0, duration: 0.18 }, "+=0.1")
-        .to("#log2", { opacity: 1, y: 0, duration: 0.18 }, "+=0.12")
-        .to("#log3", { opacity: 1, y: 0, duration: 0.18 }, "+=0.18")
-        .to("#log4", { opacity: 1, y: 0, duration: 0.22 }, "+=0.18")
-        .to("#log5", { opacity: 1, y: 0, duration: 0.18 }, "+=0.12");
 
       tl.to(progressFill, {
         width: "100%",
-        duration: 1.3,
+        duration: 1.4,
         ease: "power2.inOut"
-      }, 0.35);
+      }, 0.2);
 
       const counterObj = { val: 0 };
       tl.to(counterObj, {
         val: 100,
-        duration: 1.3,
+        duration: 1.4,
         ease: "power2.inOut",
         onUpdate: () => {
-          progressPercent.textContent = Math.round(counterObj.val) + "%";
+          const v = Math.round(counterObj.val);
+          progressPercent.textContent = v + "%";
+          if (v > 65 && splashState && splashState.textContent !== "ACCESS GRANTED") {
+            splashState.textContent = "ACCESS GRANTED";
+          }
         }
-      }, 0.35);
+      }, 0.2);
+
+      tl.call(() => {
+        if (splashTitle) {
+          splashTitle.textContent = "SYSTEM HACKED!";
+        }
+      }, null, 1.45);
 
       tl.to(splashCard, {
-        boxShadow: "0 0 100px rgba(255, 43, 43, 0.8), 0 0 25px rgba(255, 43, 43, 0.6)",
+        boxShadow: "0 0 80px rgba(255, 43, 43, 0.75), 0 0 20px rgba(255, 43, 43, 0.5)",
         borderColor: "#FF2B2B",
-        duration: 0.15,
+        duration: 0.18,
         yoyo: true,
         repeat: 1
-      }, "-=0.2");
+      }, 1.45);
 
       tl.to(splashScreen, {
         opacity: 0,
-        scale: 1.08,
-        filter: "blur(12px)",
-        duration: 0.45,
+        scale: 1.06,
+        filter: "blur(10px)",
+        duration: 0.35,
         ease: "power3.inOut",
         pointerEvents: "none"
-      });
+      }, 1.75);
     }
 
     function finishSplash() {
       if (splashCompleted) return;
       splashCompleted = true;
 
+      if (typeof gsap !== "undefined") {
+        gsap.killTweensOf([splashScreen, splashCard, progressFill]);
+      }
+
       splashScreen.style.display = "none";
-      renderWords(STATEMENTS[0]);
+      currentIndex = Math.floor(Math.random() * STATEMENTS.length);
+      renderWords(STATEMENTS[currentIndex]);
 
       if (typeof gsap !== "undefined") {
         gsap.to(contentWrapper, {
@@ -903,9 +861,11 @@
 
     btnSkip.addEventListener("click", (e) => {
       e.stopPropagation();
-      if (typeof gsap !== "undefined") {
-        gsap.killTweensOf("*");
-      }
+      finishSplash();
+    });
+
+    splashScreen.addEventListener("click", (e) => {
+      if (e.target && e.target.closest("#btnSkip")) return;
       finishSplash();
     });
 
