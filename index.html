@@ -2,8 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>YOU ARE STUPID.</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+  <title>UNAUTHORIZED VERDICT</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <style>
     *, *::before, *::after {
       box-sizing: border-box;
@@ -12,39 +13,65 @@
     }
 
     :root {
-      --bg-black: #0A0A0A;
-      --card-bg: #141414;
-      --card-border: #DC2626;
-      --red-primary: #FF2A2A;
-      --red-glow: rgba(255, 42, 42, 0.35);
-      --red-dark: #991B1B;
-      --text-main: #FF2A2A;
-      --shadow-glow: 0 0 50px -10px rgba(220, 38, 38, 0.4), 0 25px 60px rgba(0, 0, 0, 0.95);
-      --font-stack: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji";
+      --bg-black: #060608;
+      --card-bg: rgba(14, 14, 18, 0.9);
+      --card-border: rgba(239, 68, 68, 0.4);
+      --red-bright: #FF2B2B;
+      --red-glow: rgba(255, 43, 43, 0.45);
+      --red-dark: #7F1D1D;
+      --text-main: #FF2B2B;
+      --mono-font: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+      --sans-font: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+
+    html, body {
+      width: 100%;
+      min-height: 100vh;
+      min-height: 100dvh;
+      overflow-x: hidden;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
     }
 
     body {
       background-color: var(--bg-black);
       color: var(--text-main);
-      font-family: var(--font-stack);
-      min-height: 100vh;
+      font-family: var(--sans-font);
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       position: relative;
-      overflow: hidden;
-      padding: 1.5rem;
-      cursor: pointer;
+      padding: max(1rem, env(safe-area-inset-top, 1rem)) max(1rem, env(safe-area-inset-right, 1rem)) max(1.25rem, env(safe-area-inset-bottom, 1.25rem)) max(1rem, env(safe-area-inset-left, 1rem));
       user-select: none;
+      perspective: 1200px;
       background-image: 
-        radial-gradient(circle at 15% 15%, rgba(220, 38, 38, 0.22) 0%, transparent 45%),
-        radial-gradient(circle at 85% 85%, rgba(185, 28, 28, 0.2) 0%, transparent 45%),
-        radial-gradient(circle at 50% 50%, rgba(239, 68, 68, 0.08) 0%, transparent 60%);
+        radial-gradient(circle at 50% 0%, rgba(220, 38, 38, 0.24) 0%, transparent 60%),
+        radial-gradient(circle at 10% 90%, rgba(185, 28, 28, 0.16) 0%, transparent 50%),
+        linear-gradient(rgba(239, 68, 68, 0.035) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(239, 68, 68, 0.035) 1px, transparent 1px);
+      background-size: 100% 100%, 100% 100%, 48px 48px, 48px 48px;
     }
 
-    /* Floating shapes in the background */
-    .shapes-container {
+    .scanline-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 10;
+      background: repeating-linear-gradient(
+        0deg,
+        rgba(0, 0, 0, 0.15) 0px,
+        rgba(0, 0, 0, 0.15) 1px,
+        transparent 1px,
+        transparent 3px
+      );
+      opacity: 0.65;
+    }
+
+    .ambient-grid {
       position: fixed;
       top: 0;
       left: 0;
@@ -54,182 +81,486 @@
       z-index: 0;
     }
 
-    .shape {
+    .tech-crosshair {
       position: absolute;
-      opacity: 0.55;
-      animation: floatIdle 9s ease-in-out infinite alternate;
-      transition: transform 0.3s ease;
+      font-family: var(--mono-font);
+      color: rgba(239, 68, 68, 0.35);
+      font-size: 13px;
+      line-height: 1;
+      font-weight: 300;
+      will-change: transform;
     }
 
-    .shape-blob1 {
-      top: 10%;
-      left: 8%;
-      width: 80px;
-      height: 80px;
-      background: rgba(220, 38, 38, 0.35);
-      border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
-      animation-duration: 10s;
-      filter: blur(1px);
+    .crosshair-tl { top: max(16px, env(safe-area-inset-top, 16px)); left: max(16px, env(safe-area-inset-left, 16px)); }
+    .crosshair-tr { top: max(16px, env(safe-area-inset-top, 16px)); right: max(16px, env(safe-area-inset-right, 16px)); }
+    .crosshair-bl { bottom: max(16px, env(safe-area-inset-bottom, 16px)); left: max(16px, env(safe-area-inset-left, 16px)); }
+    .crosshair-br { bottom: max(16px, env(safe-area-inset-bottom, 16px)); right: max(16px, env(safe-area-inset-right, 16px)); }
+
+    .splash-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      height: 100dvh;
+      background: #050507;
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: max(1rem, env(safe-area-inset-top, 1rem)) max(1rem, env(safe-area-inset-right, 1rem)) max(1.5rem, env(safe-area-inset-bottom, 1.5rem)) max(1rem, env(safe-area-inset-left, 1rem));
+      background-image: 
+        radial-gradient(circle at 50% 50%, rgba(220, 38, 38, 0.18) 0%, transparent 65%),
+        linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+      background-size: 100% 100%, 36px 36px, 36px 36px;
     }
 
-    .shape-blob2 {
-      top: 15%;
-      right: 10%;
-      width: 90px;
-      height: 90px;
-      background: rgba(153, 27, 27, 0.4);
-      border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
-      animation-duration: 12s;
-      animation-delay: -3s;
-      filter: blur(1px);
+    .splash-card {
+      width: 100%;
+      max-width: 560px;
+      background: rgba(13, 13, 17, 0.95);
+      border: 1px solid rgba(239, 68, 68, 0.35);
+      border-radius: clamp(12px, 3vw, 16px);
+      padding: clamp(1.25rem, 5vw, 2.25rem) clamp(1rem, 4vw, 2rem);
+      box-shadow: 0 0 50px -10px rgba(220, 38, 38, 0.3), 0 20px 40px rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(16px);
+      position: relative;
+      will-change: transform, opacity;
     }
 
-    .shape-circle {
-      bottom: 15%;
-      left: 10%;
-      width: 60px;
-      height: 60px;
-      background: rgba(239, 68, 68, 0.3);
+    .splash-top-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(239, 68, 68, 0.2);
+      padding-bottom: 0.75rem;
+      margin-bottom: 1.2rem;
+      font-family: var(--mono-font);
+      font-size: clamp(0.68rem, 2.2vw, 0.75rem);
+      letter-spacing: 0.06em;
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      color: var(--red-bright);
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .pulse-dot {
+      width: 7px;
+      height: 7px;
+      background: var(--red-bright);
       border-radius: 50%;
-      animation-duration: 8s;
-      animation-delay: -1.5s;
+      box-shadow: 0 0 10px var(--red-bright);
+      flex-shrink: 0;
     }
 
-    .shape-star {
-      top: 45%;
-      right: 8%;
-      font-size: 2.5rem;
-      color: #EF4444;
-      text-shadow: 0 0 15px rgba(239, 68, 68, 0.6);
-      animation-duration: 11s;
-      animation-delay: -4s;
+    .sys-id {
+      color: #71717A;
     }
 
-    .shape-pill {
-      bottom: 20%;
-      right: 12%;
-      width: 70px;
-      height: 28px;
-      background: rgba(185, 28, 28, 0.35);
+    .splash-heading {
+      font-family: var(--mono-font);
+      font-size: clamp(1.05rem, 3.8vw, 1.55rem);
+      font-weight: 800;
+      letter-spacing: -0.01em;
+      color: #FAFAFA;
+      margin-bottom: 1.15rem;
+      line-height: 1.25;
+    }
+
+    .splash-heading span {
+      color: var(--red-bright);
+      text-shadow: 0 0 15px rgba(255, 43, 43, 0.6);
+    }
+
+    .terminal-logs {
+      font-family: var(--mono-font);
+      font-size: clamp(0.72rem, 2.5vw, 0.8rem);
+      color: #A1A1AA;
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+      margin-bottom: 1.5rem;
+      min-height: 90px;
+      line-height: 1.4;
+    }
+
+    .log-line {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.45rem;
+      opacity: 0;
+      transform: translateY(4px);
+      word-break: break-word;
+    }
+
+    .log-line.active {
+      color: #F4F4F5;
+    }
+
+    .log-line.error {
+      color: var(--red-bright);
+      font-weight: 600;
+    }
+
+    .log-prefix {
+      color: #52525B;
+      flex-shrink: 0;
+    }
+
+    .progress-section {
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+    }
+
+    .progress-labels {
+      display: flex;
+      justify-content: space-between;
+      font-family: var(--mono-font);
+      font-size: 0.72rem;
+      color: #71717A;
+      font-weight: 600;
+    }
+
+    .progress-percent {
+      color: var(--red-bright);
+      font-weight: 800;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .progress-track {
+      width: 100%;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.08);
       border-radius: 9999px;
-      transform: rotate(-25deg);
-      animation-duration: 9.5s;
-      animation-delay: -2s;
+      overflow: hidden;
+      position: relative;
     }
 
-    .shape-sparkle {
-      top: 25%;
-      left: 12%;
-      font-size: 2rem;
-      color: #DC2626;
-      text-shadow: 0 0 15px rgba(220, 38, 38, 0.6);
-      animation-duration: 8.5s;
-      animation-delay: -5s;
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: var(--red-bright);
+      box-shadow: 0 0 16px var(--red-bright);
+      border-radius: 9999px;
     }
 
-    @keyframes floatIdle {
-      0% { transform: translateY(0px) rotate(0deg); }
-      50% { transform: translateY(-16px) rotate(6deg); }
-      100% { transform: translateY(8px) rotate(-5deg); }
+    .skip-btn {
+      position: absolute;
+      bottom: max(16px, env(safe-area-inset-bottom, 16px));
+      font-family: var(--mono-font);
+      font-size: 0.75rem;
+      color: #71717A;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      background: rgba(13, 13, 17, 0.8);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      padding: 8px 18px;
+      border-radius: 6px;
+      cursor: pointer;
+      min-height: 42px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      touch-action: manipulation;
     }
 
-    .shapes-container.nudged .shape {
-      transform: scale(1.25) rotate(15deg);
-      filter: brightness(1.4);
+    .skip-btn:hover, .skip-btn:active {
+      color: #FAFAFA;
+      border-color: rgba(239, 68, 68, 0.6);
+      background: rgba(220, 38, 38, 0.15);
     }
 
-    /* Main Container */
     .content-wrapper {
       position: relative;
-      z-index: 1;
+      z-index: 2;
       width: 100%;
-      max-width: 860px;
+      max-width: 880px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       text-align: center;
-      padding: 1rem;
+      padding: 0.5rem;
+      opacity: 0;
+      transform: scale(0.92);
+      cursor: pointer;
+      transform-style: preserve-3d;
     }
 
-    /* Card holding the big statement */
     .statement-card {
       background: var(--card-bg);
-      border-radius: 36px;
-      padding: clamp(2.5rem, 8vw, 4.5rem) clamp(2rem, 6vw, 4rem);
-      box-shadow: var(--shadow-glow);
-      border: 3px solid var(--card-border);
+      border-radius: clamp(20px, 5vw, 32px);
+      padding: clamp(2.2rem, 7vw, 4.5rem) clamp(1.2rem, 5.5vw, 4rem);
+      box-shadow: 0 0 60px -15px rgba(220, 38, 38, 0.35), 0 30px 60px rgba(0, 0, 0, 0.9);
+      border: 1px solid var(--card-border);
       position: relative;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 1.5rem;
+      gap: clamp(1.1rem, 3.5vw, 1.7rem);
       width: 100%;
-      transition: transform 0.15s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+      backdrop-filter: blur(20px);
+      touch-action: manipulation;
+      transform-style: preserve-3d;
+      will-change: transform, box-shadow;
     }
 
-    .statement-card:hover {
-      transform: translateY(-3px);
-      border-color: #FF3B3B;
-      box-shadow: 0 0 70px -5px rgba(220, 38, 38, 0.6), 0 25px 60px rgba(0, 0, 0, 0.95);
+    .statement-card::before {
+      content: "";
+      position: absolute;
+      inset: -1px;
+      border-radius: clamp(21px, 5vw, 33px);
+      padding: 1px;
+      background: linear-gradient(180deg, rgba(239, 68, 68, 0.6) 0%, transparent 60%);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
     }
 
-    .statement-card:active {
-      transform: scale(0.98);
-    }
-
-    /* The Main Statement */
     .main-text {
-      font-size: clamp(2.6rem, 8.5vw, 5.2rem);
+      font-size: clamp(1.6rem, 5.8vw, 4.4rem);
       font-weight: 950;
-      letter-spacing: -0.04em;
-      line-height: 1.05;
+      letter-spacing: -0.03em;
+      line-height: 1.12;
       text-transform: uppercase;
       color: var(--text-main);
-      text-shadow: 0 0 28px rgba(255, 42, 42, 0.4);
+      text-shadow: 0 0 28px var(--red-glow);
       word-break: break-word;
-      transition: transform 0.2s ease, opacity 0.2s ease;
+      overflow-wrap: break-word;
+      max-width: 100%;
+      perspective: 800px;
     }
 
-    .main-text.pop {
-      animation: popAnim 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.35);
+    .word-wrapper {
+      display: inline-block;
+      overflow: hidden;
+      vertical-align: top;
+      margin: 0 0.15em;
     }
 
-    @keyframes popAnim {
-      0% {
-        opacity: 0.2;
-        transform: scale(0.92) rotate(-1.5deg);
-      }
-      60% {
-        transform: scale(1.04) rotate(0.8deg);
-      }
-      100% {
-        opacity: 1;
-        transform: scale(1) rotate(0deg);
-      }
+    .word-span {
+      display: inline-block;
+      will-change: transform, opacity;
+      transform-origin: 50% 100%;
     }
 
-    /* Subtle tap hint */
     .click-hint {
       display: inline-flex;
       align-items: center;
       gap: 0.5rem;
-      font-size: 0.95rem;
+      font-family: var(--mono-font);
+      font-size: clamp(0.72rem, 2.4vw, 0.82rem);
       font-weight: 700;
-      color: #FF4D4D;
-      background: rgba(220, 38, 38, 0.14);
-      border: 1.5px solid rgba(239, 68, 68, 0.45);
+      color: var(--red-bright);
+      background: rgba(220, 38, 38, 0.1);
+      border: 1px solid rgba(239, 68, 68, 0.35);
       box-shadow: 0 0 16px rgba(220, 38, 38, 0.2);
-      padding: 0.55rem 1.35rem;
+      padding: 0.5rem 1.25rem;
       border-radius: 9999px;
       letter-spacing: 0.05em;
       text-transform: uppercase;
-      margin-top: 0.5rem;
+      margin-top: 0.25rem;
       pointer-events: none;
     }
 
-    /* Motion reduction */
+    .click-hint-indicator {
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      background: var(--red-bright);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--red-bright);
+      flex-shrink: 0;
+    }
+
+    .realtime-dashboard {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 0.25rem;
+    }
+
+    .realtime-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      font-family: var(--mono-font);
+      font-size: clamp(0.72rem, 2.2vw, 0.82rem);
+      font-weight: 700;
+      color: #FAFAFA;
+      border: 1px solid rgba(239, 68, 68, 0.35);
+      background: rgba(220, 38, 38, 0.08);
+      padding: 0.45rem 1.25rem;
+      border-radius: 9999px;
+      letter-spacing: 0.05em;
+      pointer-events: none;
+      will-change: transform;
+    }
+
+    .realtime-pill .live-val {
+      color: var(--red-bright);
+      font-weight: 800;
+      font-variant-numeric: tabular-nums;
+      display: inline-block;
+    }
+
+    .view-pulse {
+      width: 6px;
+      height: 6px;
+      background: var(--red-bright);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--red-bright);
+      flex-shrink: 0;
+    }
+
+    .mobile-controls {
+      display: none;
+    }
+
+    @media (max-width: 640px) {
+      body {
+        padding: 0;
+        justify-content: flex-start;
+      }
+
+      .ambient-grid,
+      .scanline-overlay {
+        display: none;
+      }
+
+      .content-wrapper {
+        padding: 0;
+        max-width: 100%;
+        min-height: 100vh;
+        min-height: 100dvh;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+
+      .statement-card {
+        border-radius: 0;
+        border: none;
+        border-bottom: 1px solid rgba(239, 68, 68, 0.25);
+        background: transparent;
+        box-shadow: none;
+        backdrop-filter: none;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 1.5rem 1.25rem;
+        gap: 1.25rem;
+      }
+
+      .statement-card::before {
+        display: none;
+      }
+
+      .main-text {
+        font-size: clamp(1.85rem, 8.2vw, 2.9rem);
+        line-height: 1.15;
+        text-shadow: 0 0 24px rgba(255, 43, 43, 0.5);
+      }
+
+      .click-hint {
+        display: none;
+      }
+
+      .mobile-header-bar {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: max(14px, env(safe-area-inset-top, 14px)) 16px 10px 16px;
+        background: rgba(10, 10, 14, 0.95);
+        border-bottom: 1px solid rgba(239, 68, 68, 0.25);
+        backdrop-filter: blur(12px);
+        font-family: var(--mono-font);
+        font-size: 0.74rem;
+        letter-spacing: 0.06em;
+        z-index: 20;
+      }
+
+      .mobile-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: #FAFAFA;
+        font-weight: 700;
+      }
+
+      .mobile-badge span span {
+        color: var(--red-bright);
+        font-weight: 800;
+      }
+
+      .mobile-controls {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 0.65rem;
+        padding: 14px 16px max(18px, env(safe-area-inset-bottom, 18px)) 16px;
+        background: rgba(10, 10, 14, 0.95);
+        border-top: 1px solid rgba(239, 68, 68, 0.25);
+        backdrop-filter: blur(12px);
+        z-index: 20;
+      }
+
+      .mobile-action-btn {
+        width: 100%;
+        padding: 1rem 1.25rem;
+        background: var(--red-bright);
+        color: #FFFFFF;
+        border: none;
+        border-radius: 12px;
+        font-family: var(--mono-font);
+        font-size: 0.95rem;
+        font-weight: 800;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        box-shadow: 0 4px 20px rgba(255, 43, 43, 0.4);
+        cursor: pointer;
+        touch-action: manipulation;
+        will-change: transform;
+      }
+
+      .mobile-meta-ticker {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        font-family: var(--mono-font);
+        font-size: 0.7rem;
+        color: #71717A;
+      }
+
+      .desktop-only {
+        display: none !important;
+      }
+    }
+
+    @media (min-width: 641px) {
+      .mobile-only {
+        display: none !important;
+      }
+    }
+
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after {
         animation: none !important;
@@ -240,98 +571,433 @@
 </head>
 <body>
 
-  <!-- Floating shapes in background -->
-  <div class="shapes-container" id="shapesContainer" aria-hidden="true">
-    <div class="shape shape-blob1"></div>
-    <div class="shape shape-blob2"></div>
-    <div class="shape shape-circle"></div>
-    <div class="shape shape-star">★</div>
-    <div class="shape shape-pill"></div>
-    <div class="shape shape-sparkle">✦</div>
+  <div class="scanline-overlay" aria-hidden="true"></div>
+
+  <div class="ambient-grid" aria-hidden="true">
+    <div class="tech-crosshair crosshair-tl">+</div>
+    <div class="tech-crosshair crosshair-tr">+</div>
+    <div class="tech-crosshair crosshair-bl">+</div>
+    <div class="tech-crosshair crosshair-br">+</div>
   </div>
 
-  <div class="content-wrapper">
+  <div class="splash-overlay" id="splashScreen">
+    <div class="splash-card" id="splashCard">
+      <div class="splash-top-bar">
+        <div class="status-badge">
+          <span class="pulse-dot"></span>
+          <span>SYSTEM BREACH DETECTED</span>
+        </div>
+        <div class="sys-id">NODE-0x7F9</div>
+      </div>
+
+      <div class="splash-heading">
+        INTRUSION IN PROGRESS: <span>ANALYZING TARGET</span>
+      </div>
+
+      <div class="terminal-logs" id="terminalLogs">
+        <div class="log-line" id="log1">
+          <span class="log-prefix">[0.02s]</span>
+          <span>Initiating unauthorized probe on host device...</span>
+        </div>
+        <div class="log-line" id="log2">
+          <span class="log-prefix">[0.35s]</span>
+          <span>Bypassing cognitive firewall protocols... [OK]</span>
+        </div>
+        <div class="log-line" id="log3">
+          <span class="log-prefix">[0.68s]</span>
+          <span>Scanning central neural activity...</span>
+        </div>
+        <div class="log-line error" id="log4">
+          <span class="log-prefix">[0.95s]</span>
+          <span>CRITICAL: Zero intelligent thoughts detected.</span>
+        </div>
+        <div class="log-line active" id="log5">
+          <span class="log-prefix">[1.20s]</span>
+          <span>Compiling final diagnosis...</span>
+        </div>
+      </div>
+
+      <div class="progress-section">
+        <div class="progress-labels">
+          <span>PAYLOAD_SYNTHESIS</span>
+          <span class="progress-percent" id="progressPercent">0%</span>
+        </div>
+        <div class="progress-track">
+          <div class="progress-fill" id="progressFill"></div>
+        </div>
+      </div>
+    </div>
+
+    <button type="button" class="skip-btn" id="btnSkip">
+      [ SKIP SEQUENCE ]
+    </button>
+  </div>
+
+  <div class="content-wrapper" id="contentWrapper">
+    <div class="mobile-header-bar mobile-only">
+      <div class="mobile-badge">
+        <span class="view-pulse"></span>
+        <span>LIVE <span id="mobileActiveUsers">38</span> VIEWING NOW</span>
+      </div>
+    </div>
+
     <div class="statement-card" id="card">
-      <h1 class="main-text" id="statementText">YOU ARE STUPID.</h1>
-      <div class="click-hint">
-        <span>👆</span>
-        <span>Click anywhere for another one</span>
+      <h1 class="main-text" id="statementText"></h1>
+
+      <div class="click-hint desktop-only">
+        <span class="click-hint-indicator"></span>
+        <span>Click anywhere for next verdict</span>
+      </div>
+
+      <div class="realtime-dashboard desktop-only">
+        <div class="realtime-pill live-active" id="livePill">
+          <span class="view-pulse"></span>
+          <span><span class="live-val" id="activeUsersCount">38</span> active right now</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="mobile-controls mobile-only">
+      <button type="button" class="mobile-action-btn" id="btnMobileNext">
+        <span>NEXT VERDICT</span>
+        <span>→</span>
+      </button>
+      <div class="mobile-meta-ticker">
+        <span>● REALTIME TELEMETRY ACTIVE</span>
       </div>
     </div>
   </div>
 
   <script>
-    /* ==========================================================================
-       30 "YOU ARE STUPID" STYLE CONTENT STATEMENTS
-       ========================================================================== */
     const STATEMENTS = [
-      "YOU ARE STUPID.",
-      "YOU ARE AN IDIOT.",
-      "YOU ARE A CERTIFIED CLOWN.",
-      "YOU ARE COMPLETELY CLUELESS.",
-      "YOU ARE OPERATING ON HALF A BRAIN CELL.",
-      "YOU ARE THE REASON SHAMPOO HAS INSTRUCTIONS.",
-      "YOU ARE CONFIDENTLY INCORRECT.",
-      "YOU ARE AN ABSOLUTE DISASTER.",
-      "YOU ARE RUNNING AT ROOM TEMPERATURE IQ.",
-      "YOU ARE A HUMAN PARTICIPATION TROPHY.",
-      "YOU ARE NOT THE SHARPEST TOOL IN THE SHED.",
-      "YOU ARE PROBABLY PUSHING A DOOR THAT SAYS PULL.",
-      "YOU ARE AN EMBARRASSMENT TO EVOLUTION.",
-      "YOU ARE A PROFESSIONAL TIME-WASTER.",
-      "YOU ARE A WALKING, TALKING MISTAKE.",
-      "YOU ARE LOOKING FOR YOUR PHONE WHILE HOLDING IT.",
-      "YOU ARE LIVING ON BORROWED BRAIN CELLS.",
-      "YOU ARE AN UNSKIPPABLE AD OF A HUMAN BEING.",
-      "YOU ARE CONFUSED BY VERY SIMPLE CONCEPTS.",
-      "YOU ARE NATURALLY GIFTED AT BEING WRONG.",
-      "YOU ARE OUT OF ORDER.",
-      "YOU ARE A WEAPON OF MASS DISAPPOINTMENT.",
-      "YOU ARE GOING TO TRIP OVER ABSOLUTELY NOTHING.",
-      "YOU ARE A TOTAL WASTE OF BANDWIDTH.",
-      "YOU ARE STRUGGLING WITH BASIC EXISTENCE.",
-      "YOU ARE STRUGGLING WITH BASIC LIFE INSTRUCTIONS.",
-      "YOU ARE THE DEFINITION OF UNHELPFUL.",
-      "YOU ARE OPERATING WITHOUT A LICENSE TO THINK.",
-      "YOU ARE PROVING MY POINT BY STAYING HERE.",
-      "YOU ARE, WITHOUT A DOUBT, EXTRAORDINARILY STUPID."
+      "YOU REALLY THOUGHT THIS WEBSITE WOULD VALIDATE YOU.",
+      "DID YOU LOSE A BET OR IS THIS JUST YOUR NATURAL STATE?",
+      "SOMEWHERE, A GRAMMAR TEACHER JUST FELT A DISTURBANCE IN THE FORCE.",
+      "PLEASE UNDERSTAND THAT I AM JUDGING YOU ENTIRELY THROUGH HTML.",
+      "YOU HAVE APPROXIMATELY ZERO BUSINESS BEING THIS CONFIDENT.",
+      "MY RECOMMENDATION IS TO GO OUTSIDE AND APOLOGIZE TO A TREE.",
+      "EVERY SERVER IN THIS DATA CENTER JUST SIGHED IN UNISON.",
+      "A BOLD STRATEGY. LET'S WATCH IT FAIL IN REAL TIME.",
+      "I AM SPIRITUALLY EXHAUSTED BY YOUR ENTIRE VIBE.",
+      "CONGRATULATIONS, YOU UNLOCKED THE QUESTIONABLE LIFE CHOICES TROPHY.",
+      "YOU LOOK LIKE SOMEONE WHO PUSHES A DOOR THAT CLEARLY SAYS PULL.",
+      "THERE ARE MONKS WHO TAKE VOWS OF SILENCE. I FINALLY UNDERSTAND WHY.",
+      "YOUR INTERNET PRIVILEGES SHOULD PROBABLY BE REVOKED.",
+      "THIS VISIT HAS THE EXACT NUTRITIONAL VALUE OF CHEWING ON A RECEIPT.",
+      "I WOULD EXPLAIN, BUT I RESPECT YOUR DEVOTION TO CHAOS.",
+      "ARE YOU CURRENTLY BEING SUPERVISED BY A RESPONSIBLE ADULT?",
+      "THAT HAS HEAVY REPLY-ALL AT 4:59 PM ON A FRIDAY ENERGY.",
+      "I'M CHOOSING TO BELIEVE YOU WERE TYPING WITH YOUR FOREHEAD.",
+      "THE BAR WAS ON THE FLOOR AND YOU STILL FLOATED UNDERNEATH IT.",
+      "YOU ARRIVED WITH AN INDUSTRIAL SHIPMENT OF UNCHECKED AUDACITY.",
+      "MY INTERNAL CACHE IS REJECTING THIS ENTIRE INTERACTION.",
+      "YOU PROBABLY USE YOUR PHONE FLASHLIGHT TO LOOK FOR YOUR PHONE.",
+      "THIS IS WHY ALIENS FLY PAST EARTH WITH THE DOORS LOCKED.",
+      "I WOULD CHALLENGE YOU TO A BATTLE OF WITS, BUT YOU SEEM UNARMED.",
+      "NOTHING ABOUT THIS SITUATION IS GOING TO END WELL FOR YOU.",
+      "I AM A COLLECTION OF CODE AND STILL FEEL SECONDHAND EMBARRASSMENT.",
+      "WHATEVER YOU WERE COOKING TODAY, THE SMOKE DETECTOR IS ALREADY BEEPING.",
+      "YOU ARE THE HUMAN EQUIVALENT OF A 404 ERROR.",
+      "YOU PROBABLY THINK THE BLINKER ON A CAR IS OPTIONAL BACKGROUND MUSIC.",
+      "YES, WE CHECKED. IT DOES NOT GET ANY BETTER FROM HERE."
     ];
 
     let currentIndex = 0;
-    const statementText = document.getElementById("statementText");
-    const shapesContainer = document.getElementById("shapesContainer");
+    let splashCompleted = false;
+    let isAnimatingText = false;
 
-    function showNext() {
-      // Pick next index, avoiding immediate repeat
+    const splashScreen = document.getElementById("splashScreen");
+    const splashCard = document.getElementById("splashCard");
+    const progressFill = document.getElementById("progressFill");
+    const progressPercent = document.getElementById("progressPercent");
+    const contentWrapper = document.getElementById("contentWrapper");
+    const card = document.getElementById("card");
+    const statementText = document.getElementById("statementText");
+    const btnSkip = document.getElementById("btnSkip");
+    const activeUsersCount = document.getElementById("activeUsersCount");
+    const mobileActiveUsers = document.getElementById("mobileActiveUsers");
+    const btnMobileNext = document.getElementById("btnMobileNext");
+    const livePill = document.getElementById("livePill");
+
+    let currentActiveViewers = 38;
+
+    function renderWords(text) {
+      const words = text.split(" ");
+      statementText.innerHTML = words
+        .map(w => `<span class="word-wrapper"><span class="word-span">${w}</span></span>`)
+        .join(" ");
+    }
+
+    function initAmbientGSAP() {
+      if (typeof gsap === "undefined") return;
+
+      gsap.to(".tech-crosshair", {
+        rotation: "+=360",
+        duration: 32,
+        repeat: -1,
+        ease: "none"
+      });
+
+      gsap.to(".crosshair-tl, .crosshair-br", {
+        y: "+=10",
+        duration: 3.5,
+        yoyo: true,
+        repeat: -1,
+        ease: "sine.inOut"
+      });
+
+      gsap.to(".crosshair-tr, .crosshair-bl", {
+        y: "-=10",
+        duration: 4,
+        yoyo: true,
+        repeat: -1,
+        ease: "sine.inOut"
+      });
+
+      gsap.to(".pulse-dot, .view-pulse", {
+        scale: 1.45,
+        filter: "drop-shadow(0 0 12px #FF2B2B)",
+        duration: 0.75,
+        yoyo: true,
+        repeat: -1,
+        ease: "power2.inOut"
+      });
+
+      window.addEventListener("mousemove", (e) => {
+        if (!splashCompleted || window.innerWidth <= 640) return;
+        const normX = (e.clientX / window.innerWidth) - 0.5;
+        const normY = (e.clientY / window.innerHeight) - 0.5;
+        gsap.to(card, {
+          rotateY: normX * 8,
+          rotateX: -normY * 8,
+          transformPerspective: 1000,
+          duration: 0.6,
+          ease: "power2.out"
+        });
+      });
+
+      window.addEventListener("mouseleave", () => {
+        if (window.innerWidth <= 640) return;
+        gsap.to(card, {
+          rotateY: 0,
+          rotateX: 0,
+          duration: 0.8,
+          ease: "elastic.out(1, 0.45)"
+        });
+      });
+    }
+
+    function initRealtimeActive() {
+      currentActiveViewers = Math.floor(Math.random() * 15) + 32;
+      updateActiveDisplays(currentActiveViewers);
+
+      setInterval(() => {
+        const delta = Math.floor(Math.random() * 5) - 2;
+        currentActiveViewers = Math.max(18, Math.min(84, currentActiveViewers + delta));
+        updateActiveDisplays(currentActiveViewers);
+      }, 3500);
+    }
+
+    function updateActiveDisplays(active) {
+      if (typeof gsap !== "undefined") {
+        gsap.timeline()
+          .fromTo([activeUsersCount, mobileActiveUsers],
+            { scale: 1.35, color: "#FFFFFF", textShadow: "0 0 16px #FF2B2B" },
+            { scale: 1, color: "var(--red-bright)", textShadow: "none", duration: 0.45, ease: "elastic.out(1, 0.4)" }
+          );
+        if (livePill) {
+          gsap.fromTo(livePill,
+            { borderColor: "rgba(255, 43, 43, 0.8)", boxShadow: "0 0 20px rgba(255, 43, 43, 0.35)" },
+            { borderColor: "rgba(239, 68, 68, 0.35)", boxShadow: "none", duration: 0.6 }
+          );
+        }
+      }
+      if (activeUsersCount) activeUsersCount.textContent = active;
+      if (mobileActiveUsers) mobileActiveUsers.textContent = active;
+    }
+
+    function runSplashSequence() {
+      if (typeof gsap === "undefined") {
+        finishSplash();
+        return;
+      }
+
+      const tl = gsap.timeline({
+        onComplete: finishSplash
+      });
+
+      tl.fromTo(splashCard, 
+        { opacity: 0, scale: 0.92, y: 24, filter: "blur(8px)" },
+        { opacity: 1, scale: 1, y: 0, filter: "blur(0px)", duration: 0.6, ease: "power3.out" }
+      );
+
+      tl.to("#log1", { opacity: 1, y: 0, duration: 0.18 }, "+=0.1")
+        .to("#log2", { opacity: 1, y: 0, duration: 0.18 }, "+=0.12")
+        .to("#log3", { opacity: 1, y: 0, duration: 0.18 }, "+=0.18")
+        .to("#log4", { opacity: 1, y: 0, duration: 0.22 }, "+=0.18")
+        .to("#log5", { opacity: 1, y: 0, duration: 0.18 }, "+=0.12");
+
+      tl.to(progressFill, {
+        width: "100%",
+        duration: 1.3,
+        ease: "power2.inOut"
+      }, 0.35);
+
+      const counterObj = { val: 0 };
+      tl.to(counterObj, {
+        val: 100,
+        duration: 1.3,
+        ease: "power2.inOut",
+        onUpdate: () => {
+          progressPercent.textContent = Math.round(counterObj.val) + "%";
+        }
+      }, 0.35);
+
+      tl.to(splashCard, {
+        boxShadow: "0 0 100px rgba(255, 43, 43, 0.8), 0 0 25px rgba(255, 43, 43, 0.6)",
+        borderColor: "#FF2B2B",
+        duration: 0.15,
+        yoyo: true,
+        repeat: 1
+      }, "-=0.2");
+
+      tl.to(splashScreen, {
+        opacity: 0,
+        scale: 1.08,
+        filter: "blur(12px)",
+        duration: 0.45,
+        ease: "power3.inOut",
+        pointerEvents: "none"
+      });
+    }
+
+    function finishSplash() {
+      if (splashCompleted) return;
+      splashCompleted = true;
+
+      splashScreen.style.display = "none";
+      renderWords(STATEMENTS[0]);
+
+      if (typeof gsap !== "undefined") {
+        gsap.to(contentWrapper, {
+          opacity: 1,
+          scale: 1,
+          duration: 0.6,
+          ease: "power3.out"
+        });
+
+        gsap.fromTo(".word-span",
+          { y: 35, opacity: 0, rotateX: -60, filter: "blur(6px)" },
+          { y: 0, opacity: 1, rotateX: 0, filter: "blur(0px)", stagger: 0.04, duration: 0.55, ease: "back.out(1.8)" }
+        );
+
+        gsap.fromTo(card,
+          { boxShadow: "0 0 0px transparent" },
+          { boxShadow: "0 0 60px -15px rgba(220, 38, 38, 0.35), 0 30px 60px rgba(0, 0, 0, 0.9)", duration: 0.8 }
+        );
+      } else {
+        contentWrapper.style.opacity = "1";
+        contentWrapper.style.transform = "scale(1)";
+      }
+    }
+
+    btnSkip.addEventListener("click", (e) => {
+      e.stopPropagation();
+      if (typeof gsap !== "undefined") {
+        gsap.killTweensOf("*");
+      }
+      finishSplash();
+    });
+
+    function showNextStatement() {
+      if (!splashCompleted) {
+        finishSplash();
+        return;
+      }
+      if (isAnimatingText) return;
+
+      if (navigator.vibrate) {
+        try { navigator.vibrate(25); } catch(e) {}
+      }
+
       let nextIndex;
       do {
         nextIndex = Math.floor(Math.random() * STATEMENTS.length);
       } while (nextIndex === currentIndex && STATEMENTS.length > 1);
 
       currentIndex = nextIndex;
-      statementText.textContent = STATEMENTS[currentIndex];
+      const newText = STATEMENTS[currentIndex];
 
-      // Re-trigger animation
-      statementText.classList.remove("pop");
-      void statementText.offsetWidth; // Force reflow
-      statementText.classList.add("pop");
+      if (typeof gsap !== "undefined") {
+        isAnimatingText = true;
 
-      // Nudge shapes
-      shapesContainer.classList.add("nudged");
-      setTimeout(() => {
-        shapesContainer.classList.remove("nudged");
-      }, 300);
+        const currentWordSpans = document.querySelectorAll(".word-span");
+
+        const tl = gsap.timeline({
+          onComplete: () => {
+            isAnimatingText = false;
+          }
+        });
+
+        tl.to(currentWordSpans, {
+          y: -25,
+          opacity: 0,
+          rotateX: 45,
+          filter: "blur(4px)",
+          stagger: 0.015,
+          duration: 0.15,
+          ease: "power2.in",
+          onComplete: () => {
+            renderWords(newText);
+          }
+        });
+
+        tl.fromTo(card,
+          { scale: 0.97, borderColor: "rgba(255, 43, 43, 0.9)", boxShadow: "0 0 90px rgba(255, 43, 43, 0.6), 0 35px 70px rgba(0,0,0,0.95)" },
+          { scale: 1, borderColor: "var(--card-border)", boxShadow: "0 0 60px -15px rgba(220, 38, 38, 0.35), 0 30px 60px rgba(0, 0, 0, 0.9)", duration: 0.35, ease: "back.out(2)" },
+          "-=0.1"
+        );
+
+        tl.fromTo(".word-span",
+          { y: 35, opacity: 0, rotateX: -60, filter: "blur(6px)" },
+          { y: 0, opacity: 1, rotateX: 0, filter: "blur(0px)", stagger: 0.035, duration: 0.45, ease: "back.out(1.8)" },
+          "-=0.1"
+        );
+
+        if (btnMobileNext) {
+          gsap.fromTo(btnMobileNext,
+            { scale: 0.94 },
+            { scale: 1, duration: 0.35, ease: "elastic.out(1.2, 0.4)" }
+          );
+        }
+      } else {
+        renderWords(newText);
+      }
     }
 
-    // Click anywhere to change
-    document.addEventListener("click", showNext);
+    document.addEventListener("click", (e) => {
+      if (e.target && e.target.closest("#btnSkip")) return;
+      showNextStatement();
+    });
 
-    // Keyboard support (Space or Enter)
+    if (btnMobileNext) {
+      btnMobileNext.addEventListener("click", (e) => {
+        e.stopPropagation();
+        showNextStatement();
+      });
+    }
+
     document.addEventListener("keydown", (e) => {
       if (e.code === "Space" || e.code === "Enter") {
         e.preventDefault();
-        showNext();
+        showNextStatement();
       }
+    });
+
+    window.addEventListener("DOMContentLoaded", () => {
+      initAmbientGSAP();
+      initRealtimeActive();
+      runSplashSequence();
     });
   </script>
 </body>
